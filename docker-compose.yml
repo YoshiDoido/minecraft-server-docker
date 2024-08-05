@@ -1,0 +1,36 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    tty: true
+    stdin_open: true
+    container_name: Minecraft_Vanilla_1.21
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      SERVER_NAME: "Minecraft Vanilla 1.21"
+      ONLINE_MODE: "FALSE"  #TRUE para somente usuários com cópias originais e false para qualquer um, seja original ou pirata
+      VERSION: "1.21"       # Versão do Minecraft 1.21
+      TYPE: "PAPER"         # Servidor usando PAPER
+      MEMORY: "16G"         # 16GB de RAM
+      MAX_MEMORY: "32G"     # 32GB de RAM
+      MAX_PLAYERS: "5"      # Máximo de 5 jogadores
+      ENABLE_COMMAND_BLOCK: "TRUE"  # Habilita o uso de blocos de comando
+      ICON: "/data/icon.jpg"        # Ícone do servidor (deve estar na pasta raiz do servidor, se não tiver, o servidor não iniciará)
+      MOTD: "Servidor dos Teste"        # Mensagem de boas vindas
+      ANNOUNCE_PLAYER_ACHIEVEMENTS: "TRUE"  # Anuncia conquistas dos jogadores
+      GENERATE_STRUCTURES: "TRUE"           # Gera estruturas como vilas e fortalezas
+      HARDCORE: "FALSE"                      # Modo hardcore desativado
+      RCON_CMDS_STARTUP: |
+        gamerule keepInventory true
+        gamerule doMobGriefing false
+        gamerule doFireTick false
+        gamerule randomTickSpeed 50
+        execute in minecraft:the_nether run gamerule keepInventory true   # Comando para funcionar corretamente no Nether
+        execute in minecraft:the_end run gamerule keepInventory true      # Comando para funcionar corretamente no End
+
+    volumes:
+      # attach the relative directory 'data' to the container's /data path
+      - C:\Servidor de Minecraft Docker\Vanilla\Minecraft_Vanilla_1_21:/data
+    restart: on-failure:3
+    
